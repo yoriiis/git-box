@@ -1,0 +1,8 @@
+.env
+!.env.dist
+
+gitlab/*
+!gitlab/.gitkeep
+!gitlab/config/.gitkeep
+!gitlab/logs/.gitkeep
+!gitlab/data/.gitkeep

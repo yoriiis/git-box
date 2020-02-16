@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+
+  nginx-proxy:
+    # Nginx-proxy version: v1.17.3
+    image: jwilder/nginx-proxy@sha256:7b33bdc57b0cb1bcfba4eb03b16387f12d4bbbd18bc7e1741566515c9aa288a3
+    container_name: git-nginx-proxy
+    restart: ${RESTART_MODE}
+    ports:
+      - 8000:80
+      - 18443:443
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+
+  gitlab:
+    # Gitlab version: v12.3.4
+    image: 'gitlab/gitlab-ce@sha256:6911f926eb054e080c8dd542d2e468004c34491f794b1a950cbf8676439a65ef'
+    container_name: git-gitlab
+    restart: ${RESTART_MODE}
+    hostname: gitlab.${HOST_NAME}
+    environment:
+      - VIRTUAL_HOST=gitlab.${HOST_NAME}
+      - TZ=${TIME_ZONE}
+    expose:
+      - 80
+    volumes:
+      - ./gitlab/config:/etc/gitlab
+      - ./gitlab/logs:/var/log/gitlab
+      - ./gitlab/data:/var/opt/gitlab
